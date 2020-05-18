@@ -27,3 +27,5 @@ D:\STUDIA\0.INF\I4. Programowanie obiektowe (Zielonka)\TotalCommanderRep-POiG\To
 D:\STUDIA\0.INF\I4. Programowanie obiektowe (Zielonka)\TotalCommanderRep-POiG\TotalCommander\TotalCommander\obj\Debug\TotalCommander.csproj.CopyComplete
 D:\STUDIA\0.INF\I4. Programowanie obiektowe (Zielonka)\TotalCommanderRep-POiG\TotalCommander\TotalCommander\obj\Debug\MainWindow.g.cs
 D:\STUDIA\0.INF\I4. Programowanie obiektowe (Zielonka)\TotalCommanderRep-POiG\TotalCommander\TotalCommander\obj\Debug\MainWindow.baml
+D:\STUDIA\0.INF\I4. Programowanie obiektowe (Zielonka)\TotalCommanderRep-POiG\TotalCommander\TotalCommander\obj\Debug\View\Obiekt.g.cs
+D:\STUDIA\0.INF\I4. Programowanie obiektowe (Zielonka)\TotalCommanderRep-POiG\TotalCommander\TotalCommander\obj\Debug\View\Obiekt.baml

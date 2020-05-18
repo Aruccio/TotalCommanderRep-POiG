@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.IO;
 
 
 namespace TotalCommander.ViewModel
@@ -20,15 +21,20 @@ namespace TotalCommander.ViewModel
     class ViewModelPanel : ViewModelBase
     {
         public ObservableCollection<string> oc = new ObservableCollection<string>();
+        string x = "";
+
         //Do wczytania drivesList w ListBox
         //Wczytanie wszystkich dysków logicznych na komputerze
         public string CurrentDrive { get; set; }
+
+        public string PathX { get; set; }
         //Wczytuje pobrany string wybrany w comboBoxDisk
         public static string Name { get; set; }
         public string[] ListOfCurrentDrive
         {
             get
             {
+
                 return CurrentDrives;
             }
         }
@@ -52,7 +58,13 @@ namespace TotalCommander.ViewModel
                 if (_clear == null)
                 {
                     _clear = new RelayCommand(
-                        arg => { Path = CurrentDrive; Oc = Operating.ReturnOc(CurrentDrive); },
+
+                        arg => { PathX = CurrentDrive;
+                            OriginalPath = CurrentDrive.Substring(0,CurrentDrive.Length-1);
+                            MessageBox.Show(OriginalPath);
+                            Oc = Operating.ReturnOc(CurrentDrive, CurrentDrive);
+
+                        },
 
                         arg => true
 
@@ -62,7 +74,7 @@ namespace TotalCommander.ViewModel
             }
         }
 
-        //To jest przyczepione do comboBox i narazie nic nie robi - jest testowe czy odczytuje mi poprawnie string wybranego dysku
+
         public ObservableCollection<string> Oc
         {
             get { return oc; }
@@ -79,14 +91,14 @@ namespace TotalCommander.ViewModel
         }
         //Do zmiany
 
-        private string path;
-        public string Path
+        private string originalpath;
+        public string OriginalPath
         {
-            get { return path; }
+            get { return originalpath; }
             set
             {
-                path = value;
-                onPropertyChanged(nameof(Path));
+                originalpath = value;
+                onPropertyChanged(nameof(OriginalPath));
             }
         }
         //Odwołanie do textBlock, które pokazuje ścieżkę
@@ -99,7 +111,7 @@ namespace TotalCommander.ViewModel
                 currentPath = value;
                 if (currentPath != null)
                 {
-                    Path = currentPath;
+                    PathX = currentPath;
                 }
                 onPropertyChanged(nameof(CurrentPath));
             }
@@ -113,7 +125,14 @@ namespace TotalCommander.ViewModel
                 if (_newList == null)
                 {
                     _newList = new RelayCommand(
-                        arg => { Oc = Operating.ReturnOc(Path); },
+                        arg => {
+                            x = PathX[0] == '<' ? PathX.Substring(4, PathX.Length - 4) : PathX;
+                            if (Path.GetFileName(OriginalPath) != x)
+                                    OriginalPath = OriginalPath + "\\" +x;
+
+                            MessageBox.Show(OriginalPath);
+                            Oc = Operating.ReturnOc(PathX, OriginalPath);
+                        },
 
                         arg => true
 
@@ -123,124 +142,28 @@ namespace TotalCommander.ViewModel
             }
         }
 
-        //Druga część okna
-        public ObservableCollection<String> ocTo = new ObservableCollection<String>();
-        //Do wczytania ListOfDisk w ListBox
-        //Wczytanie wszystkich dysków logicznych na komputerze
-        public string CurrentDiskTo { get; set; }
-        //Wczytuje pobrany string wybrany w comboBoxDisk
-        public static string NazwaTo { get; set; }
-        public string[] ListOfCurrentDiskTo
-        {
-            get
-            {
-                return CurrentsDiskTo;
-            }
-        }
-        public string[] CurrentsDiskTo
-        {
-            get
-            {
-                string[] res = new string[Operating.drivesList.Length];
-                for (int i = 0; i < res.Length; i++)
-                    res[i] = Operating.drivesList[i];
-                return res;
-            }
-        }
-        //Wyświetlenie dysków w comboBox
-        private ICommand _clearTo = null;
-        public ICommand ClearTo
-        {
-            get
-            {
-                if (_clearTo == null)
-                {
-                    _clearTo = new RelayCommand(
-                        arg => { PathTo = CurrentDiskTo; OcTo = Operating.ReturnOc(CurrentDiskTo); },
+       
+    
 
-                        arg => true
+        //private ICommand _copy = null;
+        //public ICommand Copy
+        //{
+        //    get
+        //    {
+        //        if (_copy == null)
+        //        {
+        //            _copy = new RelayCommand(
+        //                arg => { const string quote = "\""; MessageBox.Show("copy " + quote + Path + quote + " " + quote + PathTo + quote); string commend = "copy " + quote + Path + quote + " " + quote + PathTo + quote; ExecuteCommand(commend); OcTo = Operating.ReturnOc(@PathTo); },
 
-                        );
-                }
-                return _clearTo;
-            }
-        }
-        //To jest przyczepione do comboBox i narazie nic nie robi - jest testowe czy odczytuje mi poprawnie string wybranego dysku
-        public ObservableCollection<String> OcTo
-        {
-            get { return ocTo; }
-            set
-            {
-                ocTo = value;
-                onPropertyChanged(nameof(OcTo));
-            }
-        }
-        //Odwołuje się bezpośrednio do listy widniejącej w aplikacji
-        private string pathTo;
-        public string PathTo
-        {
-            get { return pathTo; }
-            set
-            {
-                pathTo = value;
-                onPropertyChanged(nameof(PathTo));
-            }
-        }
-        //Odwołanie do textBlock, które pokazuje ścieżkę - nie działa :(
-        public static String currentPathTo;
-        public String CurrentPathTo
-        {
-            get { return currentPathTo; }
-            set
-            {
-                currentPathTo = value;
-                if (currentPathTo != null)
-                {
-                    if (Operating.IsFolder(currentPathTo) == true)
-                    {
-                        PathTo = Operating.IfFolder(currentPathTo);
-                    }
-                    else PathTo = currentPathTo;
-                }
-                onPropertyChanged(nameof(CurrentPathTo));
-            }
-        }
-        //Jak wybierze mi daną ścieżkę to się powinien zmienić textBlock?
-        private ICommand _newListTo = null;
-        public ICommand NewListTo
-        {
-            get
-            {
-                if (_newListTo == null)
-                {
-                    _newListTo = new RelayCommand(
-                        arg => { OcTo = Operating.ReturnOc(@PathTo); },
+        //                arg => true
 
-                        arg => true
+        //                );
+        //        }
+        //        return _copy;
+        //    }
+        //}
 
-                        );
-                }
-                return _newListTo;
-            }
-        }
 
-        private ICommand _copy = null;
-        public ICommand Copy
-        {
-            get
-            {
-                if (_copy == null)
-                {
-                    _copy = new RelayCommand(
-                        arg => { const string quote = "\""; MessageBox.Show("copy " + quote + Path + quote + " " + quote + PathTo + quote); string commend = "copy " + quote + Path + quote + " " + quote + PathTo + quote; ExecuteCommand(commend); OcTo = Operating.ReturnOc(@PathTo); },
-
-                        arg => true
-
-                        );
-                }
-                return _copy;
-            }
-        }
         static void ExecuteCommand(string command)
         {
             int exitCode;

@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using System.Reactive.Linq;
 using TotalCommander.ViewModel;
 using System.Windows.Forms;
-
+using System.CodeDom.Compiler;
 
 namespace TotalCommander.Model
 {
@@ -18,6 +18,7 @@ namespace TotalCommander.Model
 
         public static string[] drivesList = GetDrives();
         //public static String[] List = DriveInfo.GetDrives();
+
         public static string[] GetDrives()
         {
             var drivesList = new List<string>();
@@ -28,25 +29,32 @@ namespace TotalCommander.Model
             }
             return drivesList.ToArray();
         }
-        public static ObservableCollection<string> ReturnOc(string path)
+        public static ObservableCollection<string> ReturnOc(string path, string originalPath)
         {
+
             ObservableCollection<string> oc = new ObservableCollection<string>();
             try
             {
                 string currentPath;
-                if(!oc.Contains(Path.GetDirectoryName(path))) oc.Add(Path.GetDirectoryName(path));
-                string[] subFolders = Directory.GetDirectories(path);
+                if(!oc.Contains(Path.GetDirectoryName(originalPath))) oc.Add(Path.GetDirectoryName(originalPath));
+
+                string[] subFolders = Directory.GetDirectories(originalPath);
                 for (int i = 0; i < subFolders.Length; i++)
                 {
                     currentPath = subFolders[i];
-                    oc.Add(currentPath);
+
+                    string temp = "<D> " + Path.GetFileName(currentPath);
+                    oc.Add(temp);//currentPath);
+                    
+
                 }
 
-                string[] Files = Directory.GetFiles(path);
+
+                string[] Files = Directory.GetFiles(originalPath);
                 for (int i = 0; i < Files.Length; i++)
                 {
                     currentPath = Files[i];
-                    oc.Add(currentPath);
+                    oc.Add(Path.GetFileName(currentPath));
                 }
 
                 return oc;
@@ -54,7 +62,7 @@ namespace TotalCommander.Model
             catch
             {
                 ObservableCollection<string> empty = new ObservableCollection<string>();
-                if (!empty.Contains(Path.GetDirectoryName(path))) empty.Add(Path.GetDirectoryName(path));
+                if (!empty.Contains(Path.GetDirectoryName(originalPath))) empty.Add(path);
                 empty.Add("Pusto");
                 return empty;
             }

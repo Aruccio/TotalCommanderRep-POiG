@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:TotalCommander"
         xmlns:vm="clr-namespace:TotalCommander.ViewModel"
+        xmlns:view="clr-namespace:TotalCommander.View"
         mc:Ignorable="d"
         Title="TotalCommander" Height="600" Width="1000"
         Background="Indigo">
@@ -19,50 +20,18 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
+        
+        <view:Obiekt x:Name="ob1" Grid.Column="0">
+
+        </view:Obiekt>
 
 
-        <Button x:Name="buttonCopy" Width="100" Margin="10,10,10,10"
+
+
+        <Button x:Name="buttonCopy" Width="100" Margin="10,5,10,5"
                     Background="White" Foreground="Black"
                     Content="Kopiuj" HorizontalAlignment="Center"
                         Command="{Binding Copy}" Height="25" VerticalAlignment="Bottom"
                        />
-
-        <StackPanel  Grid.Column="0" Background="DarkSlateBlue" Margin="10,10,10,40">
-            <TextBox x:Name="firstPath2" Margin="10,20" Height="20" Width="455"
-                  HorizontalAlignment="Center" VerticalAlignment="Top"
-                  Foreground="Black" Background="White" TextAlignment="Left" FontSize="15"
-                     IsEnabled="False"
-                  Text="{Binding Path=Path}"/>
-
-            <ComboBox Margin="10"  x:Name="comboBoxDrives2" 
-                Grid.Column="1" FontSize="12" 
-                HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                ItemsSource="{Binding Path=CurrentDrives}"
-                SelectedItem="{Binding Path=CurrentDrive}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding Clear}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </ComboBox>
-
-            <StackPanel Grid.Column="0" Background="LightGray" Margin="10,10,10,10">
-                <ScrollViewer VerticalScrollBarVisibility="Visible" >
-                    <ListBox ItemsSource="{Binding Oc}"
-                     SelectedItem="{Binding CurrentPath}"
-                     FontSize="13" Height="395">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding NewList}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ListBox>
-                </ScrollViewer>
-            </StackPanel>
-
-
-        </StackPanel>
-
-
     </Grid>
 </Window>
