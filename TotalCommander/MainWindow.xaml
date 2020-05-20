@@ -8,8 +8,8 @@
         xmlns:vm="clr-namespace:TotalCommander.ViewModel"
         xmlns:view="clr-namespace:TotalCommander.View"
         mc:Ignorable="d"
-        Title="TotalCommander" Height="600" Width="1000"
-        Background="LightGray">
+        Title="TotalCommander" Height="620" Width="1000"
+        Background="Indigo" ResizeMode="NoResize">
     <Window.Resources>
         <vm:ViewModelTC x:Key="vmp"/>
     </Window.Resources>
@@ -64,8 +64,8 @@
             </i:Interaction.Triggers>
         </view:Panel>
 
-        <Button x:Name="buttonCopy" Width="100" Margin="10,5,10,5"
-                    Background="White" Foreground="Black"
+        <Button x:Name="buttonCopy" Width="100" Margin="200,0,200,10"
+                    Background="White" Foreground="Indigo"
                     Content="Kopiuj" HorizontalAlignment="Center"
                         Command="{Binding Copy}" Height="25" VerticalAlignment="Bottom"
                        />

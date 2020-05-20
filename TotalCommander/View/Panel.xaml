@@ -6,23 +6,22 @@
              xmlns:vm="clr-namespace:TotalCommander.ViewModel"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:TotalCommander.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600">
     <UserControl.Resources>
         <vm:ViewModelPanel x:Key="panel"/>
     </UserControl.Resources>
-    <Grid DataContext="{StaticResource panel}">
-        <StackPanel Background="Black" Margin="10,10,10,66">
-            <TextBlock x:Name="textBlockPath" Margin="10,20" Height="20" Width="455"
-                  HorizontalAlignment="Center" VerticalAlignment="Top"
-                  Foreground="Black" Background="White" TextAlignment="Left" FontSize="15"
+    <Grid DataContext="{StaticResource panel}" Margin="0,0,0,0">
+        <StackPanel Background="White" Margin="10,10,10,42">
+            <TextBlock x:Name="textBlockPath" Margin="10" Height="20" Width="560"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Foreground="White" Background="Indigo" TextAlignment="Left" FontSize="15"
                      IsEnabled="False"
                   Text="{Binding Path=PathPanel, RelativeSource={
                                         RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type UserControl}}}"/>
 
-            <ComboBox Margin="10"  x:Name="comboBoxOfDrives" 
-                Grid.Column="1" FontSize="12" 
+            <ComboBox Margin="10,0,10,0"  x:Name="comboBoxOfDrives" 
+                Grid.Column="1" FontSize="12" Background="Indigo"
                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
                 ItemsSource="{Binding Path=PanelDrives, RelativeSource={
                                         RelativeSource Mode=FindAncestor, 
@@ -31,12 +30,9 @@
                                         RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type UserControl}}}" 
                 SelectionChanged="comboBoxOfDrives_SelectionChanged"/>
-            <StackPanel Grid.Column="0" Background="LightGray" Margin="10,10,10,10">
-                <TextBlock x:Name="textBlockLista" Margin="20,20,10,0" Height="30" Width="100"
-                  HorizontalAlignment="Center" VerticalAlignment="Top"
-                  Foreground="Black" TextAlignment="Center" FontSize="23"
-                  Text="Lista:"/>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" >
+            <StackPanel Grid.Column="0" Background="Indigo" VerticalAlignment="Stretch"
+                        Margin="10,10,10,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="440" Margin="0">
                     <ListBox ItemsSource="{Binding PanelOC, RelativeSource={
                                         RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type UserControl}}}"
@@ -44,7 +40,8 @@
                                         RelativeSource Mode=FindAncestor, 
                                         AncestorType={x:Type UserControl}}}"
                      FontSize="13" MouseDoubleClick="ListBox_MouseDoubleClick" 
-                             MouseRightButtonUp="ListBox_MouseRightButtonUp">
+                             MouseRightButtonUp="ListBox_MouseRightButtonUp"
+                         Background="Indigo" Foreground="White" Height="440">
                     </ListBox>
                 </ScrollViewer>
             </StackPanel>
