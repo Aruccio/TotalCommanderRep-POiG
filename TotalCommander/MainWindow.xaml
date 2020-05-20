@@ -1,0 +1,73 @@
+﻿<Window x:Class="TotalCommander.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:TotalCommander"
+        xmlns:vm="clr-namespace:TotalCommander.ViewModel"
+        xmlns:view="clr-namespace:TotalCommander.View"
+        mc:Ignorable="d"
+        Title="TotalCommander" Height="600" Width="1000"
+        Background="LightGray">
+    <Window.Resources>
+        <vm:ViewModelTC x:Key="vmp"/>
+    </Window.Resources>
+
+    <Grid DataContext="{StaticResource vmp}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <view:Panel x:Name="ob1" Grid.Column="0" 
+                    PathPanel="{Binding Path=VMLeft.OriginalPath, Mode=TwoWay}" 
+                    PanelDrive="{Binding Path=VMLeft.CurrentDrive,  Mode=TwoWay}" 
+                    PanelDrives="{Binding Path=VMLeft.CurrentDrives}"
+                    PanelOC="{Binding Path=VMLeft.Oc}"
+                    PanelListPath="{Binding Path=VMLeft.CurrentPath, Mode=TwoWay}"
+                    CopyDirectoryOrFile="{Binding Path=VMLeft.CopyFilePath, Mode=TwoWay}"
+                    >
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="ComboBoxSelected">
+                    <i:InvokeCommandAction Command="{Binding Path= VMLeft.ListAfterSelectingDrive}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="UpdatedNewList">
+                    <i:InvokeCommandAction Command="{Binding Path= VMLeft.NewList}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="NewPathToCopyFile">
+                    <i:InvokeCommandAction Command="{Binding Path= VMLeft.NewPathToCopyFile}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </view:Panel>
+
+        <view:Panel x:Name="ob2" Grid.Column="1" 
+                    PathPanel="{Binding Path=VMRight.OriginalPath, Mode=TwoWay}" 
+                    PanelDrive="{Binding Path=VMRight.CurrentDrive,  Mode=TwoWay}" 
+                    PanelDrives="{Binding Path=VMRight.CurrentDrives}"
+                    PanelOC="{Binding Path=VMRight.Oc}"
+                    PanelListPath="{Binding Path=VMRight.CurrentPath, Mode=TwoWay}"
+                    CopyDirectoryOrFile="{Binding Path=VMRight.CopyFilePath, Mode=TwoWay}"
+                    >
+            
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="ComboBoxSelected">
+                    <i:InvokeCommandAction Command="{Binding Path= VMRight.ListAfterSelectingDrive}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="UpdatedNewList">
+                    <i:InvokeCommandAction Command="{Binding Path= VMRight.NewList}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="NewPathToCopyFile">
+                    <i:InvokeCommandAction Command="{Binding Path= VMRight.NewPathToCopyFile}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </view:Panel>
+
+        <Button x:Name="buttonCopy" Width="100" Margin="10,5,10,5"
+                    Background="White" Foreground="Black"
+                    Content="Kopiuj" HorizontalAlignment="Center"
+                        Command="{Binding Copy}" Height="25" VerticalAlignment="Bottom"
+                       />
+    </Grid>
+</Window>

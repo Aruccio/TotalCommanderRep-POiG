@@ -29,14 +29,14 @@ namespace TotalCommander.Model
             }
             return drivesList.ToArray();
         }
-        public static ObservableCollection<string> ReturnOc(string path, string originalPath)
+        public static ObservableCollection<string> ReturnOc(string path, string originalPath, string currentDrive)
         {
 
             ObservableCollection<string> oc = new ObservableCollection<string>();
             try
             {
                 string currentPath;
-                if(!oc.Contains(Path.GetDirectoryName(originalPath))) oc.Add(Path.GetDirectoryName(originalPath));
+                if (currentDrive != originalPath) oc.Add("..");
 
                 string[] subFolders = Directory.GetDirectories(originalPath);
                 for (int i = 0; i < subFolders.Length; i++)
@@ -48,8 +48,6 @@ namespace TotalCommander.Model
                     
 
                 }
-
-
                 string[] Files = Directory.GetFiles(originalPath);
                 for (int i = 0; i < Files.Length; i++)
                 {
@@ -62,8 +60,7 @@ namespace TotalCommander.Model
             catch
             {
                 ObservableCollection<string> empty = new ObservableCollection<string>();
-                if (!empty.Contains(Path.GetDirectoryName(originalPath))) empty.Add(path);
-                empty.Add("Pusto");
+                if (currentDrive != originalPath) oc.Add("..");
                 return empty;
             }
         }

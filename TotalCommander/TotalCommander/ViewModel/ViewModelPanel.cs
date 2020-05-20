@@ -25,19 +25,18 @@ namespace TotalCommander.ViewModel
 
         //Do wczytania drivesList w ListBox
         //Wczytanie wszystkich dysków logicznych na komputerze
-        public string CurrentDrive { get; set; }
+        public string currentDrive = "";
+
+        public string CurrentDrive
+        {
+            get { return currentDrive; }
+            set { currentDrive = value;
+                onPropertyChanged(nameof(CurrentDrive)); }
+        }
 
         public string PathX { get; set; }
         //Wczytuje pobrany string wybrany w comboBoxDisk
-        public static string Name { get; set; }
-        public string[] ListOfCurrentDrive
-        {
-            get
-            {
-
-                return CurrentDrives;
-            }
-        }
+        public string Name { get; set; }
         public string[] CurrentDrives
         {
             get
@@ -59,11 +58,9 @@ namespace TotalCommander.ViewModel
                 {
                     _clear = new RelayCommand(
 
-                        arg => { PathX = CurrentDrive;
-                            OriginalPath = CurrentDrive.Substring(0,CurrentDrive.Length-1);
-                            MessageBox.Show(OriginalPath);
-                            Oc = Operating.ReturnOc(CurrentDrive, CurrentDrive);
-
+                        arg => { PathX = CurrentDrive; OriginalPath = CurrentDrive;
+                            Oc = Operating.ReturnOc(CurrentDrive, CurrentDrive, CurrentDrive);
+                          //  MessageBox.Show(CurrentDrive);
                         },
 
                         arg => true
@@ -73,7 +70,6 @@ namespace TotalCommander.ViewModel
                 return _clear;
             }
         }
-
 
         public ObservableCollection<string> Oc
         {
@@ -102,7 +98,7 @@ namespace TotalCommander.ViewModel
             }
         }
         //Odwołanie do textBlock, które pokazuje ścieżkę
-        public static string currentPath;
+        public string currentPath;
         public string CurrentPath
         {
             get { return currentPath; }
@@ -126,12 +122,36 @@ namespace TotalCommander.ViewModel
                 {
                     _newList = new RelayCommand(
                         arg => {
-                            x = PathX[0] == '<' ? PathX.Substring(4, PathX.Length - 4) : PathX;
-                            if (Path.GetFileName(OriginalPath) != x)
-                                    OriginalPath = OriginalPath + "\\" +x;
-
-                            MessageBox.Show(OriginalPath);
-                            Oc = Operating.ReturnOc(PathX, OriginalPath);
+                            if (PathX == "..")
+                            {
+                                bool isFalse = false;
+                                if (OriginalPath[OriginalPath.Length - 1] != '\\' && isFalse==false)
+                                {
+                                    x = Path.GetFileName(OriginalPath);
+                                    OriginalPath = OriginalPath.Substring(0, OriginalPath.Length - x.Length);
+                                    isFalse = true;
+                                }
+                                if (OriginalPath[OriginalPath.Length - 1] == '\\' && isFalse == false && OriginalPath.Length>3)
+                                {
+                                    OriginalPath = OriginalPath.Substring(0, OriginalPath.Length - 1);
+                                    x = Path.GetFileName(OriginalPath);
+                                    OriginalPath = OriginalPath.Substring(0, OriginalPath.Length - x.Length);
+                                    isFalse = true;
+                                }
+                                isFalse = false;
+                            }
+                            else
+                            {
+                                x = PathX[0] == '<' ? PathX.Substring(4, PathX.Length - 4) : PathX;
+                                if (OriginalPath.Length != 0)
+                                {
+                                    if (Path.GetFileName(OriginalPath) != x && OriginalPath[OriginalPath.Length - 1] != '\\')
+                                        OriginalPath = OriginalPath + "\\" + x;
+                                    if (Path.GetFileName(OriginalPath) != x && OriginalPath[OriginalPath.Length - 1] == '\\')
+                                        OriginalPath = OriginalPath + x;
+                                }
+                            }
+                            Oc = Operating.ReturnOc(PathX, OriginalPath, CurrentDrive);
                         },
 
                         arg => true

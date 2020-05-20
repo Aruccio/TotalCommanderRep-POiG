@@ -10,20 +10,43 @@
         mc:Ignorable="d"
         Title="TotalCommander" Height="600" Width="1000"
         Background="Indigo">
+
     <Window.Resources>
-        <vm:ViewModelPanel x:Key="vmp"/>
+        <vm:ViewModelTC x:Key="vmp"/>
     </Window.Resources>
 
+
+    
     <Grid DataContext="{StaticResource vmp}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        
-        <view:Obiekt x:Name="ob1" Grid.Column="0">
 
-        </view:Obiekt>
+        <view:Panel x:Name="ob1" Grid.Column="0" 
+                    PathPanel="{Binding Path= VMLeft.OriginalPath, Mode=TwoWay}" 
+                    PanelDrive="{Binding Path =VMLeft.CurrentDrive, Mode=TwoWay}" 
+                    PanelDrives="{Binding Path=VMLeft.CurrentDrives}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MyEvent">
+                    <i:InvokeCommandAction Command="{Binding VMLeft.Clear}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </view:Panel>
+
+        <view:Panel x:Name="ob2" Grid.Column="1" 
+                    PathPanel="{Binding Path=VMRight.OriginalPath, Mode=TwoWay}"
+                    PanelDrive="{Binding Path= VMRight.CurrentDrive, Mode=TwoWay}"
+                    PanelDrives="{Binding Path=VMRight.CurrentDrives}"
+                    >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MyEvent">
+                    <i:InvokeCommandAction Command="{Binding VMRight.Clear}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </view:Panel>
 
 
 
